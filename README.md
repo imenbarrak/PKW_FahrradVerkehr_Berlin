@@ -25,3 +25,4 @@ Technologien und Tools:
 Ergebnisse:
 
 Das Projekt wird wertvolle Einblicke in die Wechselwirkungen zwischen Wetterbedingungen und dem Verkehrsverhalten in Berlin liefern. Diese Analysen können von Städten, Verkehrsplanern oder Forschern genutzt werden, um nachhaltige Verkehrsstrategien zu entwickeln.
+
