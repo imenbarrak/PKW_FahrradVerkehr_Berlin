@@ -58,7 +58,7 @@ def app():
     gdf_bikes, gdf_pkws = preprocess_geometries(df_pkws, df_bikes, gdf_bezirke)
 
     # Create map
-    st.header("Verteilung Messstationen")
+    st.header("Verteilung der Messstationen")
     map_view = folium.Map(
         location=[df_pkws['BREITENGRAD'].mean(), df_pkws['LÄNGENGRAD'].mean()],
         zoom_start=13
@@ -95,7 +95,7 @@ def app():
     col1, col2 = st.columns(2)
     
     with col1:
-        #st.subheader("Zählstellen und Bezirke (Fahrräder)")
+
         norm_bikes = colors.Normalize(
             vmin=gdf_bikes['Anzahl Messungen'].min(),
             vmax=gdf_bikes['Anzahl Messungen'].max()

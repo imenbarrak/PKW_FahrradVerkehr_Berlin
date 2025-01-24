@@ -29,24 +29,19 @@ def app():
             df_pkws = df_pkws[df_pkws['Date'].dt.month == month]
             df_Fahrräder = df_Fahrräder[df_Fahrräder['Date'].dt.month == month]
 
-        # Wenn keine Optionen ausgewählt wurden, bleiben die originalen DataFrames
-        #if 'year' not in st.session_state or st.session_state.year is None or 'month' not in st.session_state or st.session_state.month is None:
-        #    df_pkws = st.session_state.df_pkws
-        #    df_Fahrräder = st.session_state.df_Fahrräder
-
-        
-        with st.expander("Data korrelation"):
-            st.header("Data korrelation")
-            numerical_columns = ['temperature_2m (°C)', 'relative_humidity_2m (%)', 'rain (mm)', 'snowfall (cm)', 'cloud_cover (%)']
-
+        with st.expander("Data Korrelation"):
+            st.header("Data Korrelation")
+            df_pkws = df_pkws.rename(columns = {'temperature_2m (°C)': 'Temperatur_2m (°C)', 'relative_humidity_2m (%)':'Rel_Luftfeuchtigkeit_2m (%)', 'rain (mm)':'Niederschlag (mm)', 'snowfall (cm)':'Schneefall (cm)', 'cloud_cover (%)':'Bewölkung (%)'})
+            df_Fahrräder = df_Fahrräder.rename(columns = {'temperature_2m (°C)': 'Temperatur_2m (°C)', 'relative_humidity_2m (%)':'Rel_Luftfeuchtigkeit_2m (%)', 'rain (mm)':'Niederschlag (mm)', 'snowfall (cm)':'Schneefall (cm)', 'cloud_cover (%)':'Bewölkung (%)'})
+            #numerical_columns = ['temperature_2m (°C)', 'relative_humidity_2m (%)', 'rain (mm)', 'snowfall (cm)', 'cloud_cover (%)']
+            numerical_columns = ['Temperatur_2m (°C)', 'Rel_Luftfeuchtigkeit_2m (%)', 'Niederschlag (mm)', 'Schneefall (cm)', 'Bewölkung (%)']
             # Calculate correlation matrix
             corr_matrix_pkws = df_pkws[numerical_columns+['Anzahl']].corr()
             corr_matrix_fahrräder = df_Fahrräder[numerical_columns+['Anzahl']].corr()
             
             col1, col2 = st.columns(2)
             with col1:
-            #plt.figure(figsize=(10, 6))
-                # Plot the heatmap
+
                 sns.heatmap(corr_matrix_fahrräder, annot=True, cmap='coolwarm', fmt='.2f' ,vmin=-1, vmax=1)
                 plt.title('Korrelation Heatmap Fahrräder')
                 st.pyplot(plt)  # Display the plot
@@ -72,7 +67,7 @@ def app():
             quarterly_traffic_pkws = (
                 df_pkws.groupby(['year', 'quarter'])['Anzahl']
                 .mean()
-                .apply(np.floor)  # Apply floor to round down the mean value
+                .apply(np.floor) 
                 .reset_index()
             )
 
@@ -105,8 +100,8 @@ def app():
             
             # Update the line color and name for PKWs
             fig_pkws.update_traces(
-                line=dict(color='blue'),  # Set the color for PKWs line
-                name='PKWs',  # Set the name for the PKWs line in the legend
+                line=dict(color='blue'), 
+                name='PKWs', 
                 hovertemplate="<b>PKWs:</b> %{y}<extra></extra>"  # Custom hover info
             )
 
@@ -165,9 +160,6 @@ def app():
                 
             st.header("PKWs vs Fahrräder Nutzung im Laufe der Zeit (Wöchentlich)")
             
-            # Ensure 'Date' columns are in datetime format
-            #df_pkws['Date'] = pd.to_datetime(df_pkws['Date'])
-            #df_Fahrräder['Date'] = pd.to_datetime(df_Fahrräder['Date'])
             if month == 12:
                 max_week = df_pkws['Date'].dt.isocalendar().week.max()
                 # Filtere nur die letzten 5 Kalenderwochen
@@ -194,7 +186,7 @@ def app():
                 x=weekly_df_pkw['week'],
                 y=weekly_df_pkw['Anzahl'],
                 mode='lines',
-                name='Mean Wert PKW',
+                name='Durchschnitt PKW',
                 line=dict(color='blue')
             ))
 
@@ -203,7 +195,7 @@ def app():
                 x=weekly_df_fahrrad['week'],
                 y=weekly_df_fahrrad['Anzahl'],
                 mode='lines',
-                name='Mean Wert Fahrräder',
+                name='Durchschnitt Fahrräder',
                 line=dict(color='red')
             ))
             
@@ -216,8 +208,8 @@ def app():
                     "yanchor": "top",  # Vertically anchor it at the top
                     },
                 #title='Wöchentlich Aggregated Values',
-                xaxis_title='Week',
-                yaxis_title='Mean Wert',
+                xaxis_title='KWoche',
+                yaxis_title='Durchschnitt (Anzahl)',
                 template='plotly_white'  # Optional, clean background
             )
 
@@ -231,8 +223,7 @@ def app():
             # Define cell size
             cell_width = 50  # Width of each cell in pixels
             cell_height = 50  # Height of each cell in pixels
-
-            #st.subheader("PKWs")
+            
             # Create the pivot table
             pivot = df_pkws.pivot_table(
                 values='Anzahl', 
@@ -343,9 +334,7 @@ def app():
 
             # Display the plot in Streamlit
             st.plotly_chart(fig_F, use_container_width=False)
-              
+
     else:
         st.warning("No data loaded. Please load the data first.")
         
-        #wenn kein Jahr dann monat auf None 
-        # Map inder Mitte
