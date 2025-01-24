@@ -18,7 +18,7 @@ def aggregate_data(df, columns_to_aggregate):
 def app():
     st.header('Datenüberblick')
     st.markdown("""
-    Wir haben genau drei Datensätze analysiert: den Fahrradzähler, den Messquerschnitt für Autos sowie Wetterdaten in Berlin. Die betrachtete Periode erstreckt sich stundenweise von 2018 bis 2023.
+    Wir haben genau drei Datensätze analysiert nämlich: den Fahrradzähler, den Messquerschnitt für Autos sowie Wetterdaten in Berlin. Die betrachtete Periode erstreckt sich stundenweise von 2018 bis 2023.
     """)
 
     datasets = [
